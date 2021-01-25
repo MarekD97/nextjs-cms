@@ -19,15 +19,19 @@ function findUser(db, username, callback) {
   collection.findOne({username}, callback);
 }
 
-function createUser(db, username, password, callback) {
+function createUser(db, username, password, email, callback) {
   const collection = db.collection('users');
   bcrypt.hash(password, saltRounds, function(err, hash) {
     // Store hash in your password DB.
     collection.insertOne(
       {
         userId: v4(),
+        email,
         username,
         password: hash,
+        role: 'user',
+        createdAt: new Date(),
+        lastLogin: new Date()
       },
       function(err, userCreated) {
         assert.strictEqual(err, null);
@@ -43,8 +47,8 @@ export default (req, res) => {
     try {
       assert.notStrictEqual(null, req.body.username, 'Nazwa użytkownika wymagana');
       assert.notStrictEqual(null, req.body.password, 'Hasło wymagane');
-    } catch (bodyError) {
-      res.status(403).json({error: true, message: bodyError.message});
+    } catch (e) {
+      res.status(403).json({error: true, message: e.message});
     }
 
     // verify username does not exist already
@@ -54,6 +58,7 @@ export default (req, res) => {
       const db = client.db(dbName);
       const username = req.body.username;
       const password = req.body.password;
+      const email = req.body.email;
 
       findUser(db, username, function(err, user) {
         if (err) {
@@ -62,7 +67,7 @@ export default (req, res) => {
         }
         if (!user) {
           // proceed to Create
-          createUser(db, username, password, function(creationResult) {
+          createUser(db, username, password, email, function(creationResult) {
             if (creationResult.ops.length === 1) {
               const user = creationResult.ops[0];
               const token = jwt.sign(

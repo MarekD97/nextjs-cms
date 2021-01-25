@@ -20,6 +20,7 @@ function findUser(db, username, callback) {
 
 function authUser(db, username, password, hash, callback) {
   const collection = db.collection('users');
+  collection.updateOne({username}, { $set: {lastLogin: new Date()}});
   bcrypt.compare(password, hash, callback);
 }
 
@@ -55,10 +56,17 @@ export default (req, res) => {
             }
             if (match) {
               const token = jwt.sign(
-                {userId: user.userId, username: user.username},
+                {
+                  userId: user.userId, 
+                  username: user.username,
+                  email: user.email,
+                  role: user.role,
+                  createdAt: user.createdAt,
+                  lastLogin: user.lastLogin,
+                },
                 jwtSecret,
                 {
-                  expiresIn: 3600, // 1 hour
+                  expiresIn: 7200, // 2 hours
                 },
               );
               res.status(200).json({token});
