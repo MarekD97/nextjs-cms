@@ -16,7 +16,7 @@ const CommentsComponent = ({entryId}) => {
     if (auth.username) {
         loggedIn = true;
     }
-
+    const [error, setError] = useState('');
     const [text, setText] = useState('');
     function handleSubmit(e) {
         e.preventDefault();
@@ -34,7 +34,7 @@ const CommentsComponent = ({entryId}) => {
             }),
         }).then((r) => r.json()).then((data) => {
             if (data & data.error) {
-                console.log(data.message)
+                setError(data.message)
             }
             if(data) {
                 refresh();
@@ -82,6 +82,7 @@ const CommentsComponent = ({entryId}) => {
                 }
                 {loggedIn &&
                     <Form reply onSubmit={handleSubmit}>
+                        {error && <p style={{color: 'red'}}>{error}</p>}
                         <Form.TextArea onChange={(e) => setText(e.target.value)} />
                         <Button 
                             content='Dodaj komentarz' 

@@ -60,7 +60,6 @@ export default (req, res) => {
                 assert.strictEqual(null, err);
                 console.log('Connected to MongoDB server');
                 const db = client.db(dbName);
-                console.log(req.query);
                 getComment(db, req.query.id, function(result) {
                     res.status(200).json(result);
                 })

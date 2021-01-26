@@ -81,7 +81,7 @@ const HeaderModule = ({
                 padding: '2.8em 0',
                 position: 'relative'
             }}>
-            <Header as='h1' textAlign='center' color={color}>
+            <Header as='h1' textAlign='center' style={{color}}>
                 {/* Gdy nie jest edytowalny */}
                 {!editable && text}
                 {/* Input, aby można było edytować tekst */}

@@ -27,29 +27,43 @@ const EditEntry = () => {
     
     const [error, setError] = useState('');
 
+    function validateSlug(slug) {
+        const re = /^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$/;
+        return re.test(String(slug));
+    }
+    
     function handleSubmit(e) {
         e.preventDefault();
-        fetch(`/api/entries/${router.query.slug}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                title,
-                slug,
-                active,
-                updatedAt: new Date(),
-                enableComments,
-                modules,
-            }),
-        }).then((r) => r.json()).then((data) => {
-            if (data && data.error) {
-                setError(data.message);
-            }
-            if(data) {
-                router.push('/admin');
-            }
-        });
+        try {
+            if (title === '')
+                throw('Tytuł wpisu nie może być pusty.');
+            if (!validateSlug(slug))
+                throw('Nieprawidłowy slug strony.');
+            if ( modules === undefined || modules.length === 0)
+                throw('Strona musi składać się z conajmniej jednego modułu.');
+            fetch(`/api/entries/${router.query.slug}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    title,
+                    slug,
+                    active,
+                    updatedAt: new Date(),
+                    enableComments,
+                    modules,
+                }),
+            }).then((r) => r.json()).then((data) => {
+                if (data && data.error) {
+                    setError(data.message);
+                } else {
+                    router.push('/admin');
+                }
+            });
+        } catch(err) {
+            setError(err);
+        }
     }
 
     useEffect(() => {
@@ -90,8 +104,10 @@ const EditEntry = () => {
                         {item.label}
                     </Menu.Item>
                 ))}
-                {console.log(data)}
                 <Menu.Menu position='right'>
+                    <Menu.Item>
+                        { error && <p style={{color: 'red'}}>{error}</p>}
+                    </Menu.Item>
                     <Menu.Item>
                         <Button positive onClick={(e) => handleSubmit(e)}>Zapisz</Button>
                     </Menu.Item>

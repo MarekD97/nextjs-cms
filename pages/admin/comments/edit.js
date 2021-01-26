@@ -41,7 +41,6 @@ const EditComment = () => {
     useEffect(() => {
         if (data) {
             setText(data.text);
-            console.log(data)
         }
     }, [data]);
     return (

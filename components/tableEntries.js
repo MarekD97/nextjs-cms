@@ -59,7 +59,7 @@ const TableEntries = () => {
             </Table.Row>
             }
             {data && data.map(item => (
-                <Table.Row key={item._id} onClick={() => router.push(`/${item.slug}`)}>
+                <Table.Row key={item._id}>
                     <Table.Cell collapsing>
                         <Checkbox defaultChecked={item.active} toggle onChange={() => updateActive(!item.active, item.slug)} />
                     </Table.Cell>

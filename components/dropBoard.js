@@ -51,7 +51,6 @@ const DropBoard = ({ item, content, setContent }) => {
                         }} />
                     
                 ))}
-                {console.log('JSON pojemnika', content)}
         </div>
     )
 }

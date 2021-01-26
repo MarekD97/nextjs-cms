@@ -52,8 +52,8 @@ export default (req, res) => {
             try {
                 assert.notStrictEqual(null, req.body.title, 'Tytuł wymagany');
                 assert.notStrictEqual(null, req.body.slug, 'Adres podstrony (slug) wymagany');
-            } catch (bodyError) {
-                res.status(403).send(bodyError.message);
+            } catch (err) {
+                res.status(403).send(err.message);
             }
             client.connect(function(err) {
                 assert.strictEqual(null, err);
