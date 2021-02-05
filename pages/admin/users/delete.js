@@ -28,7 +28,7 @@ const DeleteUser = () => {
             </Head>
             <Form>
                 <Form.Field>
-                    <label>Czy napewno chcesz usunąć dany wpis?</label>
+                    <label>Czy napewno chcesz usunąć danego użytkownika?</label>
                 </Form.Field>
                 <Form.Group>
                     <Form.Field>

@@ -3,6 +3,7 @@ import Router from 'next/router';
 import cookie from 'js-cookie';
 
 import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
+import Link from 'next/link';
 
 const Signup = () => {
     const label = {
@@ -113,9 +114,9 @@ const Signup = () => {
                 </Form>
                 <Message>
                     <Header as="h4" color="orange">{label.message}</Header>
-                    <a href="#">
+                    <Link href="/account/login">
                         {label.login}
-                    </a>
+                    </Link>
                 </Message>
             </Grid.Column>
         </Grid>
