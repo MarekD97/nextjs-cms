@@ -25,6 +25,7 @@ const Layout = ({children}) => {
                 username={auth.username}
                 role={auth.role} 
                 logoutClick={() => {
+                    router.push('/account/signout');
                     cookie.remove('token');
                     revalidate();
                 }}/>
