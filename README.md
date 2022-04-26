@@ -34,3 +34,10 @@ yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Login as administrator for testing
+
+```
+login: demo
+password: 123456
+```
